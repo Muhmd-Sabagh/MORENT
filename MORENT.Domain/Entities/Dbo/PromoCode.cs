@@ -12,6 +12,6 @@ namespace MORENT.Domain.Entities.Dbo
         public bool IsActive { get; set; } = true;
 
         // Navigation Properties
-        public virtual ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+        public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
     }
 }

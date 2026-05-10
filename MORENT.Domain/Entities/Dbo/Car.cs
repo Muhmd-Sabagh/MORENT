@@ -27,9 +27,9 @@ namespace MORENT.Domain.Entities.Dbo
         public SteeringType SteeringType { get; set; } = null!;
 
         // Navigation Properties
-        public virtual ICollection<CarImage> CarImages { get; set; } = new List<CarImage>();
-        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
-        public virtual ICollection<Rental> Rentals { get; set; } = new List<Rental>();
-        public virtual ICollection<FavoriteCar> FavoriteCars { get; set; } = new List<FavoriteCar>();
+        public ICollection<CarImage> CarImages { get; set; } = new List<CarImage>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+        public ICollection<FavoriteCar> FavoriteCars { get; set; } = new List<FavoriteCar>();
     }
 }

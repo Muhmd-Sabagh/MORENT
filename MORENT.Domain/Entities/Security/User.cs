@@ -15,10 +15,10 @@ namespace MORENT.Domain.Entities.Security
         public bool IsActive { get; set; } = true;
 
         // Navigation Properties
-        public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-        public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
-        public virtual ICollection<Rental> Rentals { get; set; } = new List<Rental>();
-        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
-        public virtual ICollection<FavoriteCar> FavoriteCars { get; set; } = new List<FavoriteCar>();
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<FavoriteCar> FavoriteCars { get; set; } = new List<FavoriteCar>();
     }
 }

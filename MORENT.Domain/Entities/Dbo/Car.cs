@@ -5,6 +5,7 @@ namespace MORENT.Domain.Entities.Dbo
     [Table("Car", Schema = "dbo")]
     public class Car : BaseEntity
     {
+        public string Brand { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string FuelCapacity { get; set; } = string.Empty;
         public int Capacity { get; set; }

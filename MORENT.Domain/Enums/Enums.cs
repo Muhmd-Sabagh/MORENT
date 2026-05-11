@@ -1,5 +1,11 @@
 ﻿namespace MORENT.Domain.Enums
 {
+    public enum SystemRoleEnum
+    {
+        Admin = 1,
+        Customer = 2
+    }
+
     public enum RentalStatusEnum
     {
         Confirmed = 1, // Upcoming and current active rentals

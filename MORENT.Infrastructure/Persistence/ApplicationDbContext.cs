@@ -35,6 +35,16 @@ namespace MORENT.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
+            // Preventing auto-generation of IDs for lookup tables
+            modelBuilder.Entity<Role>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<RentalStatus>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<SteeringType>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<CarType>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<FuelType>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<PaymentMethod>().Property(x => x.Id).ValueGeneratedNever();
+            modelBuilder.Entity<Location>().Property(x => x.Id).ValueGeneratedNever();
+
+            // Configuring relationships and constraints
             #region Security Schema
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)

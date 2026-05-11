@@ -3,8 +3,9 @@
 namespace MORENT.Domain.Entities.Security
 {
     [Table("Roles", Schema = "security")]
-    public class Role : BaseEntity
+    public class Role
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
 
         // Navigation Properties

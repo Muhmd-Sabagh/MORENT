@@ -15,7 +15,7 @@ namespace MORENT.Domain.Entities.Security
         public bool IsActive { get; set; } = true;
 
         // Foreign Keys
-        public Guid RoleId { get; set; }
+        public int RoleId { get; set; }
         public Role Role { get; set; } = null!;
 
         // Navigation Properties

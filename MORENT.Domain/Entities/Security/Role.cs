@@ -8,6 +8,6 @@ namespace MORENT.Domain.Entities.Security
         public string Name { get; set; } = string.Empty;
 
         // Navigation Properties
-        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<User> Users { get; set; } = new List<User>();
     }
 }

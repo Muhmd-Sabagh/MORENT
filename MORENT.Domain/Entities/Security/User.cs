@@ -14,8 +14,11 @@ namespace MORENT.Domain.Entities.Security
         public string? PhoneNumber { get; set; }
         public bool IsActive { get; set; } = true;
 
+        // Foreign Keys
+        public Guid RoleId { get; set; }
+        public Role Role { get; set; } = null!;
+
         // Navigation Properties
-        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
         public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();

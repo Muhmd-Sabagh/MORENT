@@ -3,7 +3,7 @@ using MORENT.Domain.Entities;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Domain.Entities.Security;
 
-namespace MORENT.Infrastructure.Presistence
+namespace MORENT.Infrastructure.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
@@ -12,7 +12,6 @@ namespace MORENT.Infrastructure.Presistence
         #region Security Schema
         public DbSet<User> Users => Set<User>();
         public DbSet<Role> Roles => Set<Role>();
-        public DbSet<UserRole> UserRoles => Set<UserRole>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         #endregion
 
@@ -37,20 +36,11 @@ namespace MORENT.Infrastructure.Presistence
             base.OnModelCreating(modelBuilder);
 
             #region Security Schema
-            modelBuilder.Entity<UserRole>()
-                .HasKey(ur => new { ur.UserId, ur.RoleId });
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.Role)
-                .WithMany(r => r.UserRoles)
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Role)
+                .WithMany(r => r.Users)
                 .HasForeignKey(ur => ur.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<RefreshToken>()
                 .HasOne(rt => rt.User)

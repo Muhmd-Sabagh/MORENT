@@ -3,8 +3,9 @@
 namespace MORENT.Domain.Entities.Dbo
 {
     [Table("Locations", Schema = "dbo")]
-    public class Location : BaseEntity
+    public class Location
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
     }
 }

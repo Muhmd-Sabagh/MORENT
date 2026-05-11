@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using MORENT.Application.Common;
 using MORENT.Application.DTOs;
 using MORENT.Application.Interfaces.Persistence;
 using MORENT.Domain.Entities.Dbo;
@@ -37,9 +38,10 @@ namespace MORENT.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IReadOnlyList<CarDto>> GetFilteredCarsAsync(
-            string? searchTerm, string? carType, Guid? pickUpLocationId,
-            int? capacity, string? steeringType, decimal? maxPrice)
+        public async Task<PagedResult<CarDto>> GetFilteredCarsAsync(
+            string? searchTerm, string? carType, int? pickUpLocationId,
+            int? capacity, string? steeringType, decimal? maxPrice,
+            int pageNumber, int pageSize)
         {
             var query = _dbSet.AsQueryable();
 
@@ -61,12 +63,18 @@ namespace MORENT.Infrastructure.Repositories
             if (maxPrice.HasValue)
                 query = query.Where(c => c.PricePerDay <= maxPrice.Value);
 
-            return await query
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ProjectTo<CarDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+
+            return new PagedResult<CarDto>(items, totalCount, pageNumber, pageSize);
         }
 
-        public async Task<bool> IsCarAvailableAsync(Guid carId, Guid pickUpLocationId, DateTime pickUpDate, DateTime dropOffDate)
+        public async Task<bool> IsCarAvailableAsync(Guid carId, int pickUpLocationId, DateTime pickUpDate, DateTime dropOffDate)
         {
             var carExists = await _dbSet.AnyAsync(c => c.Id == carId && c.CurrentLocationId == pickUpLocationId);
             if (!carExists) return false;

@@ -14,5 +14,6 @@ namespace MORENT.Application.DTOs
         public DateTime DropOffDate { get; set; }
         public string RentalStatus { get; set; } = string.Empty;
         public decimal TotalAmount { get; set; }
+        public Guid UserId { get; set; }
     }
 }

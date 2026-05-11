@@ -1,4 +1,5 @@
-﻿using MORENT.Application.DTOs;
+﻿using MORENT.Application.Common;
+using MORENT.Application.DTOs;
 using MORENT.Domain.Entities.Dbo;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,11 @@ namespace MORENT.Application.Interfaces.Persistence
     {
         Task<IReadOnlyList<CarDto>> GetPopularCarsAsync(int count);
         Task<IReadOnlyList<CarDto>> GetFeaturedCarsAsync(int count);
-        Task<IReadOnlyList<CarDto>> GetFilteredCarsAsync(
-            string? searchTerm, string? carType, Guid? pickUpLocationId,
-            int? capacity, string? steeringType, decimal? maxPrice);
-        Task<bool> IsCarAvailableAsync(Guid carId, Guid pickUpLocationId, DateTime pickUpDate, DateTime dropOffDate);
+        Task<PagedResult<CarDto>> GetFilteredCarsAsync(
+            string? searchTerm, string? carType, int? pickUpLocationId,
+            int? capacity, string? steeringType, decimal? maxPrice,
+            int pageNumber, int pageSize);
+        Task<bool> IsCarAvailableAsync(Guid carId, int pickUpLocationId, DateTime pickUpDate, DateTime dropOffDate);
         Task<CarDto?> GetCarDetailsAsync(Guid carId);
     }
 }

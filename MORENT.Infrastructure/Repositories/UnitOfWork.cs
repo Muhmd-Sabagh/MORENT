@@ -18,6 +18,7 @@ namespace MORENT.Infrastructure.Repositories
         private IRentalRepository? _rentals;
         private IReviewRepository? _reviews;
         private IFavoriteCarRepository? _favoriteCars;
+        private IPromoCodeRepository? _promoCodes;
 
         public UnitOfWork(ApplicationDbContext context, IMapper mapper)
         {
@@ -31,6 +32,7 @@ namespace MORENT.Infrastructure.Repositories
         public IRentalRepository Rentals => _rentals ??= new RentalRepository(_context, _mapper);
         public IReviewRepository Reviews => _reviews ??= new ReviewRepository(_context, _mapper);
         public IFavoriteCarRepository FavoriteCars => _favoriteCars ??= new FavoriteCarRepository(_context, _mapper);
+        public IPromoCodeRepository PromoCodes => _promoCodes ??= new PromoCodeRepository(_context);
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

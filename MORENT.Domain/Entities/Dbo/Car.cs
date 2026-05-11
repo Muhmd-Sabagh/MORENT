@@ -15,16 +15,16 @@ namespace MORENT.Domain.Entities.Dbo
         public bool IsAvailable { get; set; } = true;
 
         // Foreign Keys
-        public Guid CurrentLocationId { get; set; }
+        public int CurrentLocationId { get; set; }
         public Location CurrentLocation { get; set; } = null!;
 
-        public Guid CarTypeId { get; set; }
+        public int CarTypeId { get; set; }
         public CarType CarType { get; set; } = null!;
 
-        public Guid FuelTypeId { get; set; }
+        public int FuelTypeId { get; set; }
         public FuelType FuelType { get; set; } = null!;
 
-        public Guid SteeringTypeId { get; set; }
+        public int SteeringTypeId { get; set; }
         public SteeringType SteeringType { get; set; } = null!;
 
         // Navigation Properties

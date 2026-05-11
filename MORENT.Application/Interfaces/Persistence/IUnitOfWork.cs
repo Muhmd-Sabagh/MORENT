@@ -12,6 +12,7 @@ namespace MORENT.Application.Interfaces.Persistence
         IRentalRepository Rentals { get; }
         IReviewRepository Reviews { get; }
         IFavoriteCarRepository FavoriteCars { get; }
+        IPromoCodeRepository PromoCodes { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

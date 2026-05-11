@@ -20,16 +20,16 @@ namespace MORENT.Domain.Entities.Dbo
         public Guid CarId { get; set; }
         public Car Car { get; set; } = null!;
 
-        public Guid PickUpLocationId { get; set; }
+        public int PickUpLocationId { get; set; }
         public Location PickUpLocation { get; set; } = null!;
 
-        public Guid DropOffLocationId { get; set; }
+        public int DropOffLocationId { get; set; }
         public Location DropOffLocation { get; set; } = null!;
 
-        public Guid PaymentMethodId { get; set; }
+        public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; } = null!;
 
-        public Guid RentalStatusId { get; set; }
+        public int RentalStatusId { get; set; }
         public RentalStatus RentalStatus { get; set; } = null!;
 
         public Guid? PromoCodeId { get; set; }

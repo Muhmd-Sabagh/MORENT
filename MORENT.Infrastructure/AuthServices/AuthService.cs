@@ -116,7 +116,6 @@ namespace MORENT.Infrastructure.AuthServices
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
                 new Claim(ClaimTypes.Role, user.Role.Name),
                 new Claim("uid", user.Id.ToString())
             };
@@ -140,12 +139,13 @@ namespace MORENT.Infrastructure.AuthServices
                 UserId = user.Id
             };
 
-            user.RefreshTokens.Add(refreshToken);
+            await _uow.Users.AddRefreshTokenAsync(refreshToken);
             await _uow.SaveChangesAsync();
 
             var response = _mapper.Map<AuthResponse>(user);
             response.Token = tokenHandler.WriteToken(token);
             response.RefreshToken = refreshToken.Token;
+            response.RefreshTokenExpiry = refreshToken.ExpiresAt;
 
             return response;
         }

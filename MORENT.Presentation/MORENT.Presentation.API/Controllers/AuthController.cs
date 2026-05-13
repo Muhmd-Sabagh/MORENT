@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MORENT.Application.Common;
 using MORENT.Application.DTOs;
 using MORENT.Application.Interfaces.Auth;
 
@@ -25,7 +26,9 @@ namespace MORENT.Presentation.API.Controllers
                 return Unauthorized(result);
             }
 
-            return Ok(result);
+            SetRefreshTokenCookie(result.DataObject?.RefreshToken, result.DataObject?.RefreshTokenExpiry);
+
+            return Ok(FormatAuthResponse(result));
         }
 
         [HttpPost("register")]
@@ -38,25 +41,74 @@ namespace MORENT.Presentation.API.Controllers
                 return BadRequest(result);
             }
 
-            return Ok(result);
+            SetRefreshTokenCookie(result.DataObject?.RefreshToken, result.DataObject?.RefreshTokenExpiry);
+
+            return Ok(FormatAuthResponse(result));
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        public async Task<IActionResult> RefreshToken()
         {
-            if (string.IsNullOrWhiteSpace(request.Token))
+            // Read the secure cookie instead of the request body
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(refreshToken))
             {
-                return BadRequest("Token is required.");
+                return Unauthorized(Result<object>.Failure("Refresh token is missing."));
             }
 
-            var result = await _authService.RefreshTokenAsync(request.Token);
+            var result = await _authService.RefreshTokenAsync(refreshToken);
 
             if (!result.IsSuccess)
             {
                 return Unauthorized(result);
             }
 
-            return Ok(result);
+            // Update the cookie with the newly generated refresh token
+            SetRefreshTokenCookie(result.DataObject?.RefreshToken, result.DataObject?.RefreshTokenExpiry);
+
+            return Ok(FormatAuthResponse(result));
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            // Clear the cookie on logout
+            Response.Cookies.Delete("refreshToken");
+            return Ok(Result<object>.Success(null, "Logged out successfully."));
+        }
+
+        // --- Helper Methods ---
+
+        private void SetRefreshTokenCookie(string? token, DateTime? expiry)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // Ensure your dev environment uses HTTPS
+                SameSite = SameSiteMode.Strict,
+                Expires = expiry ?? DateTime.UtcNow.AddDays(7)
+            };
+
+            Response.Cookies.Append("refreshToken", token ?? string.Empty, cookieOptions);
+        }
+
+        private Result<object> FormatAuthResponse(Result<AuthResponse> result)
+        {
+            // Strips the refresh token out of the JSON response payload
+            return Result<object>.Success(
+                new
+                {
+                    result.DataObject?.Id,
+                    result.DataObject?.FirstName,
+                    result.DataObject?.LastName,
+                    result.DataObject?.Email,
+                    result.DataObject?.Username,
+                    result.DataObject?.Token,
+                    result.DataObject?.Role
+                },
+                result.Message
+            );
         }
     }
 }

@@ -8,5 +8,6 @@ namespace MORENT.Application.Interfaces.Persistence
         Task<User?> GetByRefreshTokenAsync(string refreshToken);
         Task<bool> IsUsernameUniqueAsync(string username);
         Task<bool> IsEmailUniqueAsync(string email);
+        Task AddRefreshTokenAsync(RefreshToken refreshToken);
     }
 }

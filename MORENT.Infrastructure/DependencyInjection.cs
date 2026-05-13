@@ -33,7 +33,7 @@ namespace MORENT.Infrastructure
 
             var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
-            // Check Device environment variables first. Fallback to appsettings only in local dev.
+            // 4. Check Device environment variables first. Fallback to appsettings only in local dev.
             var secureKeyString = Environment.GetEnvironmentVariable("MORENT_JWT_SECRET") ?? jwtSettings!.Key;
             var key = Encoding.ASCII.GetBytes(secureKeyString);
 
@@ -57,12 +57,30 @@ namespace MORENT.Infrastructure
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
+
+                // ADD THIS DEBUGGING BLOCK:
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        // This will print the exact reason to your console!
+                        Console.WriteLine("=== TOKEN VALIDATION FAILED ===");
+                        Console.WriteLine($"Reason: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        Console.WriteLine($"=== CHALLENGE ISSUED ===");
+                        Console.WriteLine($"Error: {context.Error}, Description: {context.ErrorDescription}");
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             return services;
         }
 
-        // Initialize the database with seed data
+        // 5. Initialize the database with seed data
         public static async Task InitializeDatabaseAsync(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();

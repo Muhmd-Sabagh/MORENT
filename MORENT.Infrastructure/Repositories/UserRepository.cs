@@ -2,6 +2,7 @@
 using MORENT.Application.Interfaces.Persistence;
 using MORENT.Domain.Entities.Security;
 using MORENT.Infrastructure.Persistence;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MORENT.Infrastructure.Repositories
 {
@@ -13,6 +14,7 @@ namespace MORENT.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(u => u.Role)
+                .Include(u => u.RefreshTokens)
                 .FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
         }
 
@@ -32,6 +34,15 @@ namespace MORENT.Infrastructure.Repositories
         public async Task<bool> IsEmailUniqueAsync(string email)
         {
             return !await _dbSet.AnyAsync(u => (u.Email ?? string.Empty) == email.ToLower());
+        }
+
+        public async Task AddRefreshTokenAsync(RefreshToken refreshToken)
+        {
+            var user = await _dbSet.FindAsync(refreshToken.UserId);
+            if (user != null)
+            {
+                await _context.RefreshTokens.AddAsync(refreshToken);
+            }
         }
     }
 }

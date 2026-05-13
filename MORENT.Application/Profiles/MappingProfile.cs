@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
 using MORENT.Application.DTOs;
-using MORENT.Application.DTOs.Auth;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Domain.Entities.Security;
 
@@ -13,7 +12,7 @@ namespace MORENT.Application.Profiles
         {
             // Security Mappings
             CreateMap<User, AuthResponse>()
-                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.Name).ToList()));
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Name));
             CreateMap<RegisterRequest, User>();
 
             // Domain Projections for High Performance Reads

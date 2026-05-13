@@ -10,7 +10,7 @@ namespace MORENT.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             // Register AutoMapper scanning the current assembly for MappingProfile
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
 
             // Register Application Services
             services.AddScoped<ICarService, CarService>();

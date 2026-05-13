@@ -2,11 +2,11 @@ using Microsoft.OpenApi;
 using MORENT.Application;
 using MORENT.Infrastructure;
 
-namespace Presentation.Server
+namespace MORENT.Presentation.API
 {
     public class Program
     {
-        public async static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -30,28 +30,23 @@ namespace Presentation.Server
                     Description = "API for the MORENT Car Rental System"
                 });
 
+                // 1. Add Security Definition (Updated for OpenAPI v2)
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
+                    Type = SecuritySchemeType.Http, // Note: Switched to Http for standard JWT Bearer
+                    Scheme = "bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR...\""
+                    Description = "Enter your valid token in the text input below.\r\n\r\nExample: \"eyJhbGciOiJIUzI1NiIsInR...\""
                 });
 
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                // 2. Add Security Requirement (Using the new delegate syntax and OpenApiSecuritySchemeReference)
+                options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
+                        new OpenApiSecuritySchemeReference("Bearer", document),
+                        new List<string>()
                     }
                 });
             });

@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using MORENT.Application.Interfaces.Persistence;
 using MORENT.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MORENT.Infrastructure.Repositories
 {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using MORENT.Application.DTOs;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Domain.Entities.Security;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MORENT.Application.Interfaces.Persistence
+﻿namespace MORENT.Application.Interfaces.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {

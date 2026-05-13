@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,7 @@ using MORENT.Application.Interfaces.Persistence;
 using MORENT.Infrastructure.AuthServices;
 using MORENT.Infrastructure.Persistence;
 using MORENT.Infrastructure.Repositories;
+using System.Text;
 
 namespace MORENT.Infrastructure
 {
@@ -32,7 +32,7 @@ namespace MORENT.Infrastructure
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            
+
             // Check Device environment variables first. Fallback to appsettings only in local dev.
             var secureKeyString = Environment.GetEnvironmentVariable("MORENT_JWT_SECRET") ?? jwtSettings!.Key;
             var key = Encoding.ASCII.GetBytes(secureKeyString);

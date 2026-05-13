@@ -1,7 +1,4 @@
 ﻿using MORENT.Domain.Entities.Security;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MORENT.Application.Interfaces.Persistence
 {

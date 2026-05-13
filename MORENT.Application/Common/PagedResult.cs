@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MORENT.Application.Common
+﻿namespace MORENT.Application.Common
 {
     public class PagedResult<T>
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MORENT.Application.Common;
+﻿using MORENT.Application.Common;
 using MORENT.Application.DTOs;
 using MORENT.Application.Interfaces.Persistence;
 using MORENT.Application.Interfaces.Services;

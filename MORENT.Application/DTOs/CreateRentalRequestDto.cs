@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MORENT.Application.DTOs
+﻿namespace MORENT.Application.DTOs
 {
     public class CreateRentalRequestDto
     {

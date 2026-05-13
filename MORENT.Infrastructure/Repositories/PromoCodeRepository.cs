@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MORENT.Application.Interfaces.Persistence;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Infrastructure.Persistence;

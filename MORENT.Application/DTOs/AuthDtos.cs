@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MORENT.Application.DTOs
+﻿namespace MORENT.Application.DTOs
 {
     public class LoginRequest
     {

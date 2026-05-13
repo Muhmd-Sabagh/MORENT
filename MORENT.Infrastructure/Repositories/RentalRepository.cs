@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using MORENT.Application.Interfaces.Persistence;
 using MORENT.Application.DTOs;
+using MORENT.Application.Interfaces.Persistence;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Infrastructure.Persistence;
 

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MORENT.Application.DTOs;
 using MORENT.Application.Interfaces.Services;
+using System.Security.Claims;
 
 namespace MORENT.API.Controllers
 {

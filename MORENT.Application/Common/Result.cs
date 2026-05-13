@@ -5,7 +5,7 @@
         public bool IsSuccess { get; private set; }
         public string Message { get; private set; } = string.Empty;
         public T? DataObject { get; private set; }
-        public List<string> ErrorMessages { get ; private set; } = new List<string>();
+        public List<string> ErrorMessages { get; private set; } = new List<string>();
 
         public static Result<T> Success(T data, string message = "")
         {

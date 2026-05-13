@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MORENT.Application.DTOs
+﻿namespace MORENT.Application.DTOs
 {
     public class ReviewDto
     {

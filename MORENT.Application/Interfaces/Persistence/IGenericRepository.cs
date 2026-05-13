@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace MORENT.Application.Interfaces.Persistence
+﻿namespace MORENT.Application.Interfaces.Persistence
 {
     public interface IGenericRepository<T> where T : class
     {

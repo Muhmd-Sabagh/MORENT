@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MORENT.Application.Interfaces.Services;
 using MORENT.Application.Services;
+using System.Reflection;
 
 namespace MORENT.Application
 {

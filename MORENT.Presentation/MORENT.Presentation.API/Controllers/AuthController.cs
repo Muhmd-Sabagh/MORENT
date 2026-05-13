@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MORENT.Application.Interfaces.Auth;
+﻿using Microsoft.AspNetCore.Mvc;
 using MORENT.Application.DTOs;
+using MORENT.Application.Interfaces.Auth;
 
 namespace MORENT.Presentation.API.Controllers
 {

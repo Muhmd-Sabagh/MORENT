@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using MORENT.Domain.Entities.Dbo;
+﻿using MORENT.Domain.Entities.Dbo;
 
 namespace MORENT.Application.Interfaces.Persistence
 {

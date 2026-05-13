@@ -5,9 +5,6 @@ using MORENT.Application.DTOs;
 using MORENT.Application.Interfaces.Persistence;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MORENT.Infrastructure.Repositories
 {

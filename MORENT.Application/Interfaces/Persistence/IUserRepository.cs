@@ -1,8 +1,4 @@
-﻿using AutoMapper.Configuration.Annotations;
-using MORENT.Domain.Entities.Security;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MORENT.Domain.Entities.Security;
 
 namespace MORENT.Application.Interfaces.Persistence
 {

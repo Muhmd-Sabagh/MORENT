@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MORENT.Domain.Entities.Dbo;
 using MORENT.Domain.Entities.Security;
 using MORENT.Domain.Enums;
-using MORENT.Infrastructure.Persistence;
 
 namespace MORENT.Infrastructure.Persistence
 {

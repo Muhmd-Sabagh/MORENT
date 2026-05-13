@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MORENT.Application.Interfaces.Services;
 
-namespace MORENT.API.Controllers
+namespace MORENT.Presentation.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

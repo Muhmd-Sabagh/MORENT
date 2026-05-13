@@ -4,7 +4,7 @@ using MORENT.Application.DTOs;
 using MORENT.Application.Interfaces.Services;
 using System.Security.Claims;
 
-namespace MORENT.API.Controllers
+namespace MORENT.Presentation.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

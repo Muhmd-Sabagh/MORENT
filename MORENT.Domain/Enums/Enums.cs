@@ -3,7 +3,7 @@
     public enum SystemRoleEnum
     {
         Admin = 1,
-        Customer = 2
+        Client = 2
     }
 
     public enum RentalStatusEnum

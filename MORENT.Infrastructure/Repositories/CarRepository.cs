@@ -19,26 +19,44 @@ namespace MORENT.Infrastructure.Repositories
 
         public async Task<IReadOnlyList<CarDto>> GetPopularCarsAsync(int count)
         {
+            // Top rented cars first. If there are no rentals, fallback to newest cars
             return await _dbSet
-                .OrderByDescending(c => c.Rentals.Count) // Adjusted for 'Rentals' navigation
+                .OrderByDescending(c => c.Rentals.Count)
+                .ThenByDescending(c => c.CreatedAt)
                 .Take(count)
                 .ProjectTo<CarDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
-        public async Task<IReadOnlyList<CarDto>> GetFeaturedCarsAsync(int count)
+        public async Task<IReadOnlyList<CarDto>> GetRecommendedCarsAsync(int count)
         {
+            var today = DateTime.UtcNow;
+
+            // Highest rated cars that are AVAILABLE right now
             return await _dbSet
+                .Where(c => !c.Rentals.Any(r => r.RentalStatus.Name != "Cancelled"
+                                             && r.PickUpDate <= today
+                                             && r.DropOffDate >= today))
                 .OrderByDescending(c => c.AverageRating)
                 .Take(count)
                 .ProjectTo<CarDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
+            public async Task<IReadOnlyList<LocationDto>> GetAvailableLocationsAsync()
+            {
+                return await _context.Locations
+                .AsNoTracking()
+                .OrderBy(l => l.Name)
+                .Select(l => new LocationDto { Id = l.Id, Name = l.Name })
+                .ToListAsync();
+            }
+
         public async Task<PagedResult<CarDto>> GetFilteredCarsAsync(
             string? searchTerm, string? carType, int? pickUpLocationId,
             int? capacity, string? steeringType, decimal? maxPrice,
-            int pageNumber, int pageSize)
+            DateTime? pickUpDate, DateTime? dropOffDate,
+            int pageNumber = 1, int pageSize = 9)
         {
             var query = _dbSet.AsQueryable();
 
@@ -59,6 +77,14 @@ namespace MORENT.Infrastructure.Repositories
 
             if (maxPrice.HasValue)
                 query = query.Where(c => c.PricePerDay <= maxPrice.Value);
+
+            if (pickUpDate.HasValue && dropOffDate.HasValue)
+            {
+                query = query.Where(c => !c.Rentals.Any(r =>
+                    r.RentalStatus.Name != "Cancelled" &&
+                    r.PickUpDate < dropOffDate.Value &&
+                    r.DropOffDate > pickUpDate.Value));
+            }
 
             var totalCount = await query.CountAsync();
 
@@ -89,6 +115,33 @@ namespace MORENT.Infrastructure.Repositories
                 .Where(c => c.Id == carId)
                 .ProjectTo<CarDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
+        }
+
+        // Favorites
+        public async Task<IReadOnlyList<CarDto>> GetUserFavoriteCarsAsync(Guid userId)
+        {
+            return await _context.FavoriteCars
+                .AsNoTracking()
+                .Where(f => f.UserId == userId)
+                .Select(f => f.Car)
+                .ProjectTo<CarDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<FavoriteCar?> GetFavoriteAsync(Guid userId, Guid carId)
+        {
+            return await _context.FavoriteCars
+                .FirstOrDefaultAsync(f => f.UserId == userId && f.CarId == carId);
+        }
+
+        public async Task AddFavoriteAsync(FavoriteCar favorite)
+        {
+            await _context.FavoriteCars.AddAsync(favorite);
+        }
+
+        public void RemoveFavorite(FavoriteCar favorite)
+        {
+            _context.FavoriteCars.Remove(favorite);
         }
     }
 }

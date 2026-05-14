@@ -51,5 +51,13 @@ namespace MORENT.Presentation.API.Controllers
 
             return result.IsSuccess ? Ok(result) : NotFound(result);
         }
+
+        [HttpGet("payment-methods")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAvailabePaymentMethods()
+        {
+            var result = await _rentalService.GetAvailabePaymentMethodsAsync();
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
     }
 }

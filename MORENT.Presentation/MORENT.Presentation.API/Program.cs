@@ -57,7 +57,7 @@ namespace MORENT.Presentation.API
                 options.AddPolicy("AllowAngularClient",
                     policy =>
                     {
-                        policy.WithOrigins(["https://localhost:59407", "http://localhost:5286", "https://localhost:7068"])
+                        policy.WithOrigins("https://localhost:59407", "https://127.0.0.1:59407", "http://localhost:5286", "https://localhost:7068")
                               .AllowAnyHeader()
                               .AllowAnyMethod()
                               .AllowCredentials();
@@ -69,9 +69,6 @@ namespace MORENT.Presentation.API
             // Initialize the database (Uncomment for the first run only)
             //await app.InitializeDatabaseAsync();
 
-            app.UseDefaultFiles();
-            app.MapStaticAssets();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -81,6 +78,9 @@ namespace MORENT.Presentation.API
 
             app.UseHttpsRedirection();
             app.UseCors("AllowAngularClient");
+
+            app.UseDefaultFiles();
+            app.MapStaticAssets();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

@@ -19,6 +19,11 @@ namespace MORENT.Application.Services
         public async Task<Result<Guid>> CreateRentalAsync(CreateRentalRequestDto request, Guid userId)
         {
             // 1. Validate Dates
+            if (request.PickUpDate.Date < DateTime.UtcNow.Date)
+            {
+                return Result<Guid>.Failure("Pick-up date/time must not be before today.");
+            }
+
             if (request.DropOffDate <= request.PickUpDate)
             {
                 return Result<Guid>.Failure("Drop-off date must be after pick-up date.");
@@ -65,7 +70,6 @@ namespace MORENT.Application.Services
                     discountAmount = promo.DiscountAmount.Value;
                 }
 
-                // Ensured that discount doesn't make subtotal negative
                 if (discountAmount > subtotal) discountAmount = subtotal;
             }
 
@@ -111,6 +115,12 @@ namespace MORENT.Application.Services
             if (rental.UserId != userId) return Result<RentalDto>.Failure("Unauthorized.");
 
             return Result<RentalDto>.Success(rental);
+        }
+
+        public async Task<Result<IReadOnlyList<PaymentMethodDto>>> GetAvailabePaymentMethodsAsync()
+        {
+            var methods = await _uow.Rentals.GetAvailabePaymentMethodsAsync();
+            return Result<IReadOnlyList<PaymentMethodDto>>.Success(methods);
         }
     }
 }

@@ -7,5 +7,6 @@ namespace MORENT.Application.Interfaces.Services
     {
         Task<Result<Guid>> CreateRentalAsync(CreateRentalRequestDto request, Guid userId);
         Task<Result<RentalDto>> GetRentalDetailsAsync(Guid rentalId, Guid userId);
+        Task<Result<IReadOnlyList<PaymentMethodDto>>> GetAvailabePaymentMethodsAsync();
     }
 }

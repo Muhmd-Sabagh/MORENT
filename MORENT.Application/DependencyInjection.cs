@@ -15,6 +15,7 @@ namespace MORENT.Application
             // Register Application Services
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IRentalService, RentalService>();
+            services.AddScoped<IDashboardService, DashboardService>();
 
             return services;
         }

@@ -1,14 +1,11 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
-import { AppRoutingModule } from './app-routing-module';
-import { App } from './app';
+import { AppRoutingModule } from "./app-routing-module";
+import { CoreModule } from "./core/core-module";
+import { LayoutModule } from "./layout/layout-module";
 
 @NgModule({
-  declarations: [App],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
-  providers: [provideBrowserGlobalErrorListeners()],
-  bootstrap: [App],
+  imports: [BrowserModule, AppRoutingModule, CoreModule, LayoutModule],
 })
 export class AppModule {}

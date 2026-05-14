@@ -1,0 +1,27 @@
+.hero-image-card {
+  min-height: 360px;
+  border-radius: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='200' cy='200' r='180' fill='%23ffffff' fill-opacity='0.1'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.drop-shadow-lg {
+  filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.3));
+}
+
+.thumbnail-card {
+  height: 124px;
+  background-color: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.thumbnail-card.active {
+  border-width: 2px !important;
+}
+
+.thumbnail-card:not(.active):hover {
+  border: 1px solid var(--primary-300);
+}

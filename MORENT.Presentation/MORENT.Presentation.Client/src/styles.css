@@ -1,1 +1,170 @@
 /* You can add global styles to this file, and also import other style files */
+/* Import Plus Jakarta Sans from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  /* =========================================
+     Color System (From Color Style.pdf)
+     ========================================= */
+
+  /* Primary / Brand Colors */
+  --primary-900: #0a196f;
+  --primary-800: #102587;
+  --primary-700: #1a37a7;
+  --primary-600: #264bc8;
+  --primary-500: #3563e9; /* Default Main Color */
+  --primary-400: #658df1;
+  --primary-300: #85a8f8;
+  --primary-200: #aec8fc;
+  --primary-100: #d6e4fd;
+  --white: #ffffff;
+
+  /* Success Colors */
+  --success-900: #3b6506;
+  --success-800: #4c7a0b;
+  --success-700: #659711;
+  --success-600: #7fb519;
+  --success-500: #9cd323; /* Default */
+  --success-400: #bce455;
+  --success-300: #d3f178;
+  --success-200: #e8faa6;
+  --success-100: #f5fcd2;
+
+  /* Error Colors */
+  --error-900: #7a0619;
+  --error-800: #930b16;
+  --error-700: #b71112;
+  --error-600: #db2719;
+  --error-500: #ff4423; /* Default */
+  --error-400: #ff7f59;
+  --error-300: #ffa37a;
+  --error-200: #ffc8a6;
+  --error-100: #ffe7d3;
+
+  /* Warning Colors */
+  --warning-900: #7a4d0b;
+  --warning-800: #936312;
+  --warning-700: #b78a1d;
+  --warning-600: #dbaa29;
+  --warning-500: #facc15; /* Default */
+
+  /* Neutral / Grays (Inferred standard shades for text/backgrounds) */
+  --gray-900: #1a202c; /* Main Text */
+  --gray-700: #3d5278; /* Secondary Text */
+  --gray-400: #90a3bf; /* Muted Text / Placeholder */
+  --gray-100: #f6f7f9; /* Backgrounds / Cards */
+
+  /* =========================================
+     Typography System (From Typography.pdf)
+     ========================================= */
+  --font-family: "Plus Jakarta Sans", sans-serif;
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+  --text-4xl: 40px;
+  --text-display: 72px;
+
+  /* Line Heights */
+  --lh-tight: 110%;
+  --lh-snug: 120%;
+  --lh-normal: 140%;
+
+  /* =========================================
+     Bootstrap Theme Mapping
+     Keep Bootstrap components aligned with Figma tokens
+     ========================================= */
+  --bs-body-font-family: var(--font-family);
+  --bs-body-bg: var(--gray-100);
+  --bs-body-color: var(--gray-900);
+
+  --bs-primary: var(--primary-500);
+  --bs-primary-rgb: 53, 99, 233; /* rgb(53,99,233) == --primary-500 (#3563E9) */
+
+  --bs-link-color: var(--primary-500);
+  --bs-link-hover-color: var(--primary-700);
+
+  --bs-border-radius: 10px;
+}
+
+/* Base Resets */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--gray-100);
+  color: var(--gray-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Utility Classes */
+.text-xs {
+  font-size: var(--text-xs);
+  line-height: var(--lh-normal);
+}
+.text-sm {
+  font-size: var(--text-sm);
+  line-height: var(--lh-normal);
+}
+.text-base {
+  font-size: var(--text-base);
+  line-height: var(--lh-normal);
+}
+.text-lg {
+  font-size: var(--text-lg);
+  line-height: var(--lh-normal);
+}
+.text-xl {
+  font-size: var(--text-xl);
+  line-height: var(--lh-normal);
+}
+.text-2xl {
+  font-size: var(--text-2xl);
+  line-height: var(--lh-snug);
+}
+.text-3xl {
+  font-size: var(--text-3xl);
+  line-height: var(--lh-snug);
+}
+
+.font-regular {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
+
+/* Global Utilities */
+.text-primary {
+  color: var(--primary-500);
+}
+.text-muted {
+  color: var(--gray-400);
+}
+.bg-primary {
+  background-color: var(--primary-500);
+}
+.bg-white {
+  background-color: var(--white);
+}
+
+/* Bootstrap utility alignment with Figma tokens */
+.bg-light {
+  background-color: var(--gray-100) !important;
+}
+
+/* Missing utilities used in templates */
+.cursor-pointer {
+  cursor: pointer;
+}

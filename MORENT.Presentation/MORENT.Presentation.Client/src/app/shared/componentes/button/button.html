@@ -1,0 +1,5 @@
+<button [class]="classes" [disabled]="disabled" (click)="onClick.emit($event)">
+  <i *ngIf="iconLeft" [class]="iconLeft"></i>
+  <span>{{ label }}</span>
+  <i *ngIf="iconRight" [class]="iconRight"></i>
+</button>

@@ -1,0 +1,5 @@
+.form-control:focus {
+  box-shadow: none;
+  border: 1px solid var(--primary-500) !important;
+  background-color: var(--white) !important;
+}

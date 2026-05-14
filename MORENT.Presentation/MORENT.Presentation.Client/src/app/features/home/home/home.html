@@ -1,0 +1,101 @@
+<div class="container py-4">
+  <ng-container *ngIf="checkoutSuccess$ | async"></ng-container>
+
+  <ng-container *ngIf="successMessage$ | async as successMessage">
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+  </ng-container>
+
+  <!-- Hero Banners Placeholder -->
+  <div class="row mb-5 g-4">
+    <div class="col-md-6">
+      <div
+        class="p-4 rounded text-white bg-primary h-100"
+        style="min-height: 300px"
+      >
+        <h2 class="text-3xl font-bold mb-3">
+          The Best Platform<br />for Car Rental
+        </h2>
+        <p class="mb-4 text-base">
+          Ease of doing a car rental safely and reliably. Of course at a low
+          price.
+        </p>
+        <app-button label="Rental Car" variant="primary"></app-button>
+      </div>
+    </div>
+    <div class="col-md-6 d-none d-md-block">
+      <div
+        class="p-4 rounded text-white h-100"
+        style="background-color: var(--primary-600); min-height: 300px"
+      >
+        <h2 class="text-3xl font-bold mb-3">
+          Easy way to rent a<br />car at a low price
+        </h2>
+        <p class="mb-4 text-base">
+          Providing cheap car rental services and safe and comfortable
+          facilities.
+        </p>
+        <app-button
+          label="Rental Car"
+          variant="primary"
+          style="background-color: var(--primary-400); border: none"
+        ></app-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popular Cars Section -->
+  <div class="d-flex justify-content-between align-items-center mb-3 px-3">
+    <span class="text-muted font-semibold">Popular Car</span>
+    <a
+      routerLink="/cars/catalog"
+      class="text-primary text-decoration-none font-semibold"
+      >View All</a
+    >
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div
+      class="col-12 col-md-6 col-lg-3"
+      *ngFor="let car of (popularCars$ | async) ?? []"
+    >
+      <app-car-card
+        [car]="car"
+        (rentClicked)="onRentCar($event)"
+      ></app-car-card>
+    </div>
+  </div>
+
+  <!-- Recommendation Cars Section -->
+  <div class="d-flex justify-content-between align-items-center mb-3 px-3">
+    <span class="text-muted font-semibold">Recommendation Car</span>
+    <a
+      routerLink="/cars/catalog"
+      class="text-primary text-decoration-none font-semibold"
+      >View All</a
+    >
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div
+      class="col-12 col-md-6 col-lg-3"
+      *ngFor="let car of (recommendedCars$ | async) ?? []"
+    >
+      <app-car-card
+        [car]="car"
+        (rentClicked)="onRentCar($event)"
+      ></app-car-card>
+    </div>
+  </div>
+
+  <!-- Central "Show more car" navigates to catalog -->
+  <div class="d-flex justify-content-center mt-5 mb-4">
+    <a
+      routerLink="/cars/catalog"
+      class="btn btn-primary font-semibold px-4 py-2 rounded-3 custom-btn"
+    >
+      Show more car
+    </a>
+  </div>
+</div>

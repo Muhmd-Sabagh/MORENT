@@ -1,0 +1,224 @@
+<div class="bg-light min-vh-100 py-4">
+  <div class="container-fluid px-4">
+    <!-- Loading State -->
+    <div *ngIf="isLoading$ | async" class="d-flex justify-content-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="row g-4" *ngIf="dashboardData$ | async as data">
+      <!-- Details Rental (Left Col) -->
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-3 p-4 h-100">
+          <h3 class="text-lg font-bold mb-4">Details Rental</h3>
+
+          <div class="map-placeholder rounded-3 mb-4"></div>
+
+          <ng-container *ngIf="data.activeRental; else noActiveRental">
+            <!-- Car Info -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div
+                class="bg-primary rounded-3 p-2 flex-shrink-0"
+                style="width: 132px; height: 72px"
+              >
+                <img
+                  [src]="data.activeRental.imageUrl || 'assets/placeholder-car.png'"
+                  class="img-fluid object-fit-contain h-100"
+                  [alt]="data.activeRental.carName"
+                />
+              </div>
+              <div class="flex-grow-1">
+                <h4 class="text-xl font-bold mb-1">
+                  {{ data.activeRental.carName }}
+                </h4>
+                <p class="text-sm text-muted mb-0">
+                  {{ data.activeRental.carType }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Pick-Up / Drop-Off Info using Angular Date Pipe securely matching EF Core output -->
+            <div class="mb-4">
+              <div class="mb-2">
+                <span class="fw-semibold text-primary"
+                  ><i class="bi bi-circle-fill me-2 fs-6"></i>Pick-Up</span
+                >
+              </div>
+              <div class="row g-3 text-sm">
+                <div class="col-6">
+                  <span class="text-muted font-semibold d-block mb-1"
+                    >Locations</span
+                  >
+                  <span class="font-semibold"
+                    >{{ data.activeRental.pickUpLocation }}</span
+                  >
+                </div>
+                <div class="col-6 border-start ps-3">
+                  <span class="text-muted font-semibold d-block mb-1"
+                    >Date</span
+                  >
+                  <span class="font-semibold"
+                    >{{ data.activeRental.pickUpDate | date:'dd MMM yyyy'
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="mb-2">
+                <span class="fw-semibold text-info"
+                  ><i class="bi bi-circle-fill me-2 fs-6"></i>Drop-Off</span
+                >
+              </div>
+              <div class="row g-3 text-sm">
+                <div class="col-6">
+                  <span class="text-muted font-semibold d-block mb-1"
+                    >Locations</span
+                  >
+                  <span class="font-semibold"
+                    >{{ data.activeRental.dropOffLocation }}</span
+                  >
+                </div>
+                <div class="col-6 border-start ps-3">
+                  <span class="text-muted font-semibold d-block mb-1"
+                    >Date</span
+                  >
+                  <span class="font-semibold"
+                    >{{ data.activeRental.dropOffDate | date:'dd MMM yyyy'
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <hr class="mb-4 border-light" />
+
+            <div
+              class="d-flex justify-content-between align-items-center mt-auto"
+            >
+              <div>
+                <h4 class="text-lg font-bold mb-1">Total Rental Price</h4>
+                <p class="text-xs text-muted mb-0">
+                  Overall price and includes rental discount
+                </p>
+              </div>
+              <span class="text-3xl font-bold"
+                >${{ data.activeRental.totalPrice | number:'1.2-2' }}</span
+              >
+            </div>
+          </ng-container>
+
+          <ng-template #noActiveRental>
+            <div
+              class="text-center py-5 text-muted h-100 d-flex flex-column justify-content-center"
+            >
+              <i class="bi bi-car-front fs-1 mb-2 opacity-50"></i>
+              <h4 class="font-semibold">No Active Rentals</h4>
+              <p class="text-sm">
+                There are currently no active bookings to display on the map.
+              </p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Right Column (Charts & Transactions) -->
+      <div class="col-lg-6 d-flex flex-column gap-4">
+        <!-- Top 5 Car Rental -->
+        <div class="card border-0 shadow-sm rounded-3 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-lg font-bold mb-0">Top 5 Car Rental</h3>
+            <button class="btn btn-link text-muted p-0">
+              <i class="bi bi-three-dots"></i>
+            </button>
+          </div>
+
+          <div class="row align-items-center">
+            <!-- Pure CSS Donut Chart -->
+            <div class="col-md-5 d-flex justify-content-center mb-4 mb-md-0">
+              <div class="donut-chart">
+                <div class="donut-inner">
+                  <span class="text-2xl font-bold"
+                    >{{ data.totalRentals | number }}</span
+                  >
+                  <span class="text-xs text-muted font-medium">Rental Car</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-7">
+              <div
+                *ngFor="let stat of data.topCars"
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <div class="d-flex align-items-center gap-2">
+                  <div
+                    class="rounded-circle"
+                    style="width: 12px; height: 12px"
+                    [style.backgroundColor]="stat.colorHex"
+                  ></div>
+                  <span class="text-sm font-semibold text-muted"
+                    >{{ stat.type }}</span
+                  >
+                </div>
+                <span class="text-sm font-bold">{{ stat.count | number }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card border-0 shadow-sm rounded-3 p-4 flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-lg font-bold mb-0">Recent Transaction</h3>
+            <a
+              routerLink="/dashboard"
+              class="text-primary font-semibold text-sm text-decoration-none"
+              >View All</a
+            >
+          </div>
+
+          <div class="d-flex flex-column gap-3">
+            <div
+              *ngFor="let trans of data.recentTransactions"
+              class="d-flex justify-content-between align-items-center py-2 border-bottom border-light"
+            >
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="bg-light rounded p-2"
+                  style="width: 114px; height: 50px"
+                >
+                  <img
+                    [src]="trans.imageUrl || 'assets/placeholder-car.png'"
+                    class="img-fluid object-fit-contain h-100"
+                    [alt]="trans.carName"
+                  />
+                </div>
+                <div>
+                  <h4 class="text-base font-bold mb-1">{{ trans.carName }}</h4>
+                  <p class="text-xs text-muted mb-0">{{ trans.carType }}</p>
+                </div>
+              </div>
+              <div class="text-end">
+                <p class="text-xs text-muted mb-1">
+                  {{ trans.date | date:'dd MMM yyyy' }}
+                </p>
+                <span class="text-base font-bold text-dark"
+                  >${{ trans.price | number:'1.2-2' }}</span
+                >
+              </div>
+            </div>
+
+            <div
+              *ngIf="data.recentTransactions.length === 0"
+              class="text-center text-muted py-4 text-sm"
+            >
+              No recent transactions found.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

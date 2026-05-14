@@ -1,0 +1,42 @@
+.car-card {
+  border-radius: 10px;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.car-image-container {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.car-image-container img {
+  max-height: 100%;
+}
+
+.drop-shadow-sm {
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.15));
+}
+
+.favorite-btn {
+  transition: transform 0.1s ease-in-out;
+}
+
+.favorite-btn:active {
+  transform: scale(0.8);
+}
+
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+.scale-up {
+  transform: scale(1.15);
+}

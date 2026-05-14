@@ -1,0 +1,52 @@
+.sidebar-card {
+  top: 100px;
+  border-radius: 10px;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.custom-radio {
+  width: 1.25em;
+  height: 1.25em;
+  cursor: pointer;
+  accent-color: var(--primary-500);
+}
+
+.custom-checkbox-label {
+  cursor: pointer;
+}
+
+.custom-checkbox-label:hover span {
+  color: var(--primary-500) !important;
+}
+
+.custom-range::-webkit-slider-thumb {
+  background: var(--primary-500);
+}
+.custom-range::-moz-range-thumb {
+  background: var(--primary-500);
+}
+
+/* Specific styling for the top bar to match Figma's clean text look */
+@media (min-width: 1200px) {
+  .border-end-xl {
+    border-right: 1px solid #dee2e6 !important;
+  }
+}
+
+/* Remove default focus rings from inputs inside the cards */
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+  outline: none;
+  background-color: var(--gray-100) !important;
+  border-radius: 4px;
+}
+
+/* Remove default webkit dropdown arrow to match Figma clean select */
+select.form-select {
+  background-image: none;
+  cursor: pointer;
+}

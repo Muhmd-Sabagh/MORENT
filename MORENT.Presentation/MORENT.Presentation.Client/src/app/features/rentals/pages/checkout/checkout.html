@@ -1,0 +1,427 @@
+<div class="container py-4">
+  <div class="row g-4" *ngIf="carDetails$ | async as car">
+    <div class="col-lg-8">
+      <ng-container *ngIf="errorMessage$ | async as errorMessage">
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+      </ng-container>
+
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(car.id)">
+        <div
+          class="card border-0 shadow-sm p-4 mb-4"
+          formGroupName="billingInfo"
+        >
+          <div class="d-flex justify-content-between mb-3">
+            <div>
+              <h3 class="text-xl font-bold mb-1">Billing Info</h3>
+              <p class="text-muted text-sm mb-0">
+                Please enter your billing info
+              </p>
+            </div>
+            <span class="text-muted text-sm">Step 1 of 4</span>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm">Name</label>
+              <input
+                type="text"
+                class="form-control bg-light border-0"
+                formControlName="name"
+                placeholder="Your name"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm"
+                >Phone Number</label
+              >
+              <input
+                type="text"
+                class="form-control bg-light border-0"
+                formControlName="phoneNumber"
+                placeholder="Phone number"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm">Address</label>
+              <input
+                type="text"
+                class="form-control bg-light border-0"
+                formControlName="address"
+                placeholder="Address"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm"
+                >Town / City</label
+              >
+              <input
+                type="text"
+                class="form-control bg-light border-0"
+                formControlName="townCity"
+                placeholder="Town or city"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="card border-0 shadow-sm p-4 mb-4"
+          formGroupName="rentalInfo"
+        >
+          <div class="d-flex justify-content-between mb-3">
+            <div>
+              <h3 class="text-xl font-bold mb-1">Rental Info</h3>
+              <p class="text-muted text-sm mb-0">
+                Please select your rental date
+              </p>
+            </div>
+            <span class="text-muted text-sm">Step 2 of 4</span>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm"
+                >Pick-Up Location (ID)</label
+              >
+              <select
+                class="form-select bg-light border-0"
+                formControlName="pickUpLocationId"
+              >
+                <option [ngValue]="null">Select your city</option>
+                <option
+                  *ngFor="let loc of (locations$ | async) ?? []"
+                  [ngValue]="loc.id"
+                >
+                  {{ loc.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm"
+                >Pick-Up Date</label
+              >
+              <input
+                type="datetime-local"
+                class="form-control bg-light border-0"
+                formControlName="pickUpDate"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm"
+                >Drop-Off Location (ID)</label
+              >
+              <select
+                class="form-select bg-light border-0"
+                formControlName="dropOffLocationId"
+              >
+                <option [ngValue]="null">Select your city</option>
+                <option
+                  *ngFor="let loc of (locations$ | async) ?? []"
+                  [ngValue]="loc.id"
+                >
+                  {{ loc.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-semibold text-sm"
+                >Drop-Off Date</label
+              >
+              <input
+                type="datetime-local"
+                class="form-control bg-light border-0"
+                formControlName="dropOffDate"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm p-4 mb-4">
+          <div class="d-flex justify-content-between mb-3">
+            <div>
+              <h3 class="text-xl font-bold mb-1">Payment Method</h3>
+              <p class="text-muted text-sm mb-0">
+                Please enter your payment method
+              </p>
+            </div>
+            <span class="text-muted text-sm">Step 3 of 4</span>
+          </div>
+
+          <ng-container
+            *ngIf="paymentMethods$ | async as paymentMethods; else paymentMethodsLoading"
+          >
+            <div
+              *ngFor="let method of paymentMethods"
+              class="bg-light p-3 rounded mb-3"
+            >
+              <div class="d-flex align-items-center">
+                <input
+                  type="radio"
+                  class="form-check-input mt-0 me-3"
+                  formControlName="paymentMethodId"
+                  [value]="method.id"
+                />
+                <span class="font-semibold flex-grow-1">{{ method.name }}</span>
+
+                <i
+                  *ngIf="paymentMethodKey(method.name) === 'credit-card'"
+                  class="bi bi-credit-card"
+                ></i>
+                <i
+                  *ngIf="paymentMethodKey(method.name) === 'paypal'"
+                  class="bi bi-paypal"
+                ></i>
+                <i
+                  *ngIf="paymentMethodKey(method.name) === 'bitcoin'"
+                  class="bi bi-currency-bitcoin"
+                ></i>
+              </div>
+
+              <div
+                *ngIf="(selectedPaymentMethodId$ | async) === method.id"
+                class="mt-3"
+                formGroupName="paymentDetails"
+              >
+                <ng-container [ngSwitch]="paymentMethodKey(method.name)">
+                  <!-- Credit Card -->
+                  <div *ngSwitchCase="'credit-card'" formGroupName="creditCard">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label font-semibold text-sm"
+                          >Card Number</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control bg-white border-0"
+                          placeholder="Card number"
+                          inputmode="numeric"
+                          autocomplete="cc-number"
+                          formControlName="cardNumber"
+                        />
+                        <div
+                          *ngIf="isInvalid('paymentDetails.creditCard.cardNumber')"
+                          class="text-danger text-xs mt-1"
+                        >
+                          Enter a valid card number.
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label font-semibold text-sm"
+                          >Expiration Date</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control bg-white border-0"
+                          placeholder="MM/YY"
+                          inputmode="numeric"
+                          autocomplete="cc-exp"
+                          formControlName="expirationDate"
+                        />
+                        <div
+                          *ngIf="isInvalid('paymentDetails.creditCard.expirationDate')"
+                          class="text-danger text-xs mt-1"
+                        >
+                          Use MM/YY format.
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label font-semibold text-sm"
+                          >Card Holder</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control bg-white border-0"
+                          placeholder="Card holder"
+                          autocomplete="cc-name"
+                          formControlName="cardHolder"
+                        />
+                        <div
+                          *ngIf="isInvalid('paymentDetails.creditCard.cardHolder')"
+                          class="text-danger text-xs mt-1"
+                        >
+                          Card holder is required.
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label font-semibold text-sm"
+                          >CVC</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control bg-white border-0"
+                          placeholder="CVC"
+                          inputmode="numeric"
+                          autocomplete="cc-csc"
+                          formControlName="cvc"
+                        />
+                        <div
+                          *ngIf="isInvalid('paymentDetails.creditCard.cvc')"
+                          class="text-danger text-xs mt-1"
+                        >
+                          Enter a valid CVC.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PayPal -->
+                  <div *ngSwitchCase="'paypal'" formGroupName="paypal">
+                    <label class="form-label font-semibold text-sm"
+                      >PayPal Email</label
+                    >
+                    <input
+                      type="email"
+                      class="form-control bg-white border-0"
+                      placeholder="your@email.com"
+                      autocomplete="email"
+                      formControlName="email"
+                    />
+                    <div
+                      *ngIf="isInvalid('paymentDetails.paypal.email')"
+                      class="text-danger text-xs mt-1"
+                    >
+                      Enter a valid email.
+                    </div>
+                  </div>
+
+                  <!-- Bitcoin -->
+                  <div *ngSwitchCase="'bitcoin'" formGroupName="bitcoin">
+                    <label class="form-label font-semibold text-sm"
+                      >Wallet Address</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control bg-white border-0"
+                      placeholder="Wallet address"
+                      formControlName="walletAddress"
+                    />
+                    <div
+                      *ngIf="isInvalid('paymentDetails.bitcoin.walletAddress')"
+                      class="text-danger text-xs mt-1"
+                    >
+                      Wallet address is required.
+                    </div>
+                  </div>
+
+                  <div *ngSwitchDefault class="text-muted text-sm">
+                    Payment details are not available for this method.
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div *ngIf="paymentMethods.length === 0" class="text-muted text-sm">
+              No payment methods available.
+            </div>
+          </ng-container>
+
+          <ng-template #paymentMethodsLoading>
+            <div class="text-muted text-sm">Loading payment methods...</div>
+          </ng-template>
+        </div>
+
+        <div
+          class="card border-0 shadow-sm p-4 mb-4"
+          formGroupName="confirmation"
+        >
+          <div class="d-flex justify-content-between mb-3">
+            <div>
+              <h3 class="text-xl font-bold mb-1">Confirmation</h3>
+              <p class="text-muted text-sm mb-0">
+                We are getting to the end. Just few clicks and your rental is
+                ready!
+              </p>
+            </div>
+            <span class="text-muted text-sm">Step 4 of 4</span>
+          </div>
+
+          <div class="form-check bg-light p-3 rounded mb-3">
+            <input
+              class="form-check-input ms-1 me-3"
+              type="checkbox"
+              formControlName="marketingConsent"
+            />
+            <label class="form-check-label font-semibold text-sm"
+              >I agree with sending Marketing and newsletter emails. No spam,
+              promised!</label
+            >
+          </div>
+
+          <div class="form-check bg-light p-3 rounded mb-4">
+            <input
+              class="form-check-input ms-1 me-3"
+              type="checkbox"
+              formControlName="termsConsent"
+            />
+            <label class="form-check-label font-semibold text-sm"
+              >I agree with our terms and conditions and privacy policy.</label
+            >
+          </div>
+
+          <app-button
+            label="Rent Now"
+            variant="primary"
+            size="large"
+            [disabled]="checkoutForm.invalid || ((isLoading$ | async) ?? false)"
+          >
+          </app-button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 100px">
+        <h3 class="text-lg font-bold mb-1">Rental Summary</h3>
+        <p class="text-muted text-sm mb-4">
+          Prices may change depending on the length of the rental and the price
+          of your rental car.
+        </p>
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="bg-primary rounded p-2" style="width: 110px">
+            <img
+              [src]="car.mainImageUrl || 'assets/placeholder-car.png'"
+              class="img-fluid"
+              [alt]="car.brand"
+            />
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-1">{{ car.brand }}</h4>
+            <div class="d-flex align-items-center text-sm text-muted">
+              <i class="bi bi-star-fill text-warning me-1"></i>
+              <span>{{ car.averageRating | number:'1.1-1' }} Reviewer</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="mb-4" />
+
+        <div
+          class="d-flex justify-content-between mb-3 font-semibold text-muted"
+        >
+          <span>Subtotal</span>
+          <span class="text-dark">${{ car.pricePerDay | number:'1.2-2' }}</span>
+        </div>
+        <div
+          class="d-flex justify-content-between mb-4 font-semibold text-muted"
+        >
+          <span>Tax</span>
+          <span class="text-dark">$0.00</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <div>
+            <h4 class="text-base font-bold mb-1">Total Rental Price</h4>
+            <p class="text-xs text-muted mb-0">Overall price rental</p>
+          </div>
+          <span class="text-3xl font-bold"
+            >${{ car.pricePerDay | number:'1.2-2' }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

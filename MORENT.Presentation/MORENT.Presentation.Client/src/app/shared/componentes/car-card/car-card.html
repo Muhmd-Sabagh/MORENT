@@ -1,0 +1,75 @@
+<div
+  class="card border-0 shadow-sm car-card p-3 h-100 bg-white cursor-pointer"
+  role="link"
+  tabindex="0"
+  (click)="onCardClick()"
+  (keydown.enter)="onCardClick()"
+  (keydown.space)="$event.preventDefault(); onCardClick()"
+>
+  <!-- Header: Title and Type -->
+  <div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+      <h3 class="text-lg font-bold mb-1 text-dark">{{ car.brand }}</h3>
+      <p class="text-sm text-muted mb-0">{{ car.carType }}</p>
+    </div>
+
+    <!-- Smart Favorite Toggle Button -->
+    <button
+      class="btn btn-link p-0 text-muted favorite-btn"
+      (click)="onToggleFavorite($event)"
+    >
+      <i
+        class="bi text-lg transition-all"
+        [ngClass]="(isFavorite$ | async) ? 'bi-heart-fill text-danger scale-up' : 'bi-heart'"
+        [class.opacity-50]="isLoading$ | async"
+      >
+      </i>
+    </button>
+  </div>
+
+  <!-- Car Image -->
+  <div class="text-center mb-4 car-image-container">
+    <img
+      [src]="car.mainImageUrl || 'assets/placeholder-car.png'"
+      [alt]="car.brand"
+      class="img-fluid object-fit-contain drop-shadow-sm"
+    />
+  </div>
+
+  <!-- Specs Row -->
+  <div class="d-flex justify-content-between text-muted text-sm mb-4">
+    <div class="d-flex align-items-center gap-1 font-medium">
+      <i class="bi bi-fuel-pump"></i> <span>{{ car.fuelType }}</span>
+    </div>
+    <div class="d-flex align-items-center gap-1 font-medium">
+      <i class="bi bi-vinyl"></i> <span>{{ car.steeringType }}</span>
+    </div>
+    <div class="d-flex align-items-center gap-1 font-medium">
+      <i class="bi bi-people"></i> <span>{{ car.capacity }} People</span>
+    </div>
+  </div>
+
+  <!-- Footer: Price and Button -->
+  <div class="d-flex justify-content-between align-items-center mt-auto">
+    <div>
+      <span class="text-xl font-bold text-dark"
+        >${{ car.pricePerDay | number:'1.2-2' }}/</span
+      ><span class="text-sm text-muted">day</span>
+      <div
+        *ngIf="car.discount"
+        class="text-xs text-muted text-decoration-line-through mt-1"
+      >
+        ${{ car.pricePerDay + car.discount | number:'1.2-2' }}
+      </div>
+    </div>
+    <div (click)="$event.stopPropagation()">
+      <app-button
+        label="Rent Now"
+        variant="primary"
+        size="medium"
+        (onClick)="onRentClick()"
+      >
+      </app-button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,331 @@
+<div class="container-fluid bg-light min-vh-100 py-4">
+  <div class="row g-4 px-md-4">
+    <!-- Sidebar Filters -->
+    <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+      <div class="card border-0 shadow-sm p-4 sticky-top sidebar-card">
+        <form [formGroup]="filterForm">
+          <!-- Type Filter -->
+          <div class="mb-5">
+            <h6
+              class="text-xs text-muted font-semibold tracking-wider mb-4 text-uppercase"
+            >
+              T Y P E
+            </h6>
+            <div class="d-flex flex-column gap-3">
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="carType"
+                  value="Sport"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">Sport</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="carType"
+                  value="SUV"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">SUV</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="carType"
+                  value="MPV"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">MPV</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="carType"
+                  value="Sedan"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">Sedan</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="carType"
+                  value="Hatchback"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted"
+                  >Hatchback</span
+                >
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="carType"
+                  value=""
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted"
+                  >All Types</span
+                >
+              </label>
+            </div>
+          </div>
+
+          <!-- Capacity Filter -->
+          <div class="mb-5">
+            <h6
+              class="text-xs text-muted font-semibold tracking-wider mb-4 text-uppercase"
+            >
+              C A P A C I T Y
+            </h6>
+            <div class="d-flex flex-column gap-3">
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="capacity"
+                  [value]="2"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">2 Person</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="capacity"
+                  [value]="4"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">4 Person</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="capacity"
+                  [value]="6"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted">6 Person</span>
+              </label>
+              <label
+                class="d-flex align-items-center gap-3 custom-checkbox-label"
+              >
+                <input
+                  type="radio"
+                  formControlName="capacity"
+                  [value]="null"
+                  class="custom-radio"
+                />
+                <span class="text-base font-semibold text-muted"
+                  >Any Capacity</span
+                >
+              </label>
+            </div>
+          </div>
+
+          <!-- Price Filter -->
+          <div>
+            <h6
+              class="text-xs text-muted font-semibold tracking-wider mb-4 text-uppercase"
+            >
+              P R I C E
+            </h6>
+            <input
+              type="range"
+              class="form-range custom-range mb-2"
+              min="10"
+              max="150"
+              step="5"
+              formControlName="maxPrice"
+            />
+            <div class="text-base font-semibold text-muted">
+              Max. ${{ filterForm.get('maxPrice')?.value }}.00
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Content (Cars Grid) -->
+    <div
+      class="col-12 col-lg-9 col-xl-10"
+      *ngIf="catalogState$ | async as state"
+    >
+      <!-- Pick-Up / Drop-Off Summary Bar (Now fully wired and reactive!) -->
+      <form
+        [formGroup]="filterForm"
+        class="card border-0 shadow-sm p-4 mb-4 rounded-3 d-flex flex-column flex-xl-row align-items-center justify-content-between gap-4"
+      >
+        <div class="flex-grow-1 w-100 border-end-xl pe-xl-4">
+          <div class="mb-2">
+            <span class="fw-semibold text-primary"
+              ><i class="bi bi-circle-fill me-2 fs-6"></i>Pick-Up</span
+            >
+          </div>
+          <div class="row g-3">
+            <div class="col-4 border-end pe-3">
+              <label class="font-bold text-dark text-sm mb-1 d-block"
+                >Locations</label
+              >
+              <select
+                formControlName="pickUpLocationId"
+                class="form-select border-0 text-muted bg-transparent p-0 text-xs shadow-none fw-medium"
+              >
+                <option value="">Select your city</option>
+                <option
+                  *ngFor="let loc of (locations$ | async) ?? []"
+                  [value]="loc.id"
+                >
+                  {{ loc.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-4 border-end pe-3">
+              <label class="font-bold text-dark text-sm mb-1 d-block"
+                >Date</label
+              >
+              <input
+                type="date"
+                formControlName="pickUpDate"
+                class="form-control border-0 text-muted bg-transparent p-0 text-xs shadow-none fw-medium"
+              />
+            </div>
+            <div class="col-4">
+              <label class="font-bold text-dark text-sm mb-1 d-block"
+                >Time</label
+              >
+              <input
+                type="time"
+                formControlName="pickUpTime"
+                class="form-control border-0 text-muted bg-transparent p-0 text-xs shadow-none fw-medium"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary rounded-3 p-3 shadow-sm flex-shrink-0 z-1"
+          style="width: 60px; height: 60px; margin: -20px 0"
+        >
+          <i class="bi bi-arrow-down-up"></i>
+        </button>
+
+        <div class="flex-grow-1 w-100 ps-xl-4">
+          <div class="mb-2">
+            <span class="fw-semibold text-info"
+              ><i class="bi bi-circle-fill me-2 fs-6"></i>Drop-Off</span
+            >
+          </div>
+          <div class="row g-3">
+            <div class="col-4 border-end pe-3">
+              <label class="font-bold text-dark text-sm mb-1 d-block"
+                >Locations</label
+              >
+              <select
+                formControlName="dropOffLocationId"
+                class="form-select border-0 text-muted bg-transparent p-0 text-xs shadow-none fw-medium"
+              >
+                <option value="">Select your city</option>
+                <option
+                  *ngFor="let loc of (locations$ | async) ?? []"
+                  [value]="loc.id"
+                >
+                  {{ loc.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-4 border-end pe-3">
+              <label class="font-bold text-dark text-sm mb-1 d-block"
+                >Date</label
+              >
+              <input
+                type="date"
+                formControlName="dropOffDate"
+                class="form-control border-0 text-muted bg-transparent p-0 text-xs shadow-none fw-medium"
+              />
+            </div>
+            <div class="col-4">
+              <label class="font-bold text-dark text-sm mb-1 d-block"
+                >Time</label
+              >
+              <input
+                type="time"
+                formControlName="dropOffTime"
+                class="form-control border-0 text-muted bg-transparent p-0 text-xs shadow-none fw-medium"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Cars Grid -->
+      <div class="row g-4 mb-5">
+        <div class="col-12 col-md-6 col-xl-4" *ngFor="let car of state.items">
+          <app-car-card
+            [car]="car"
+            (rentClicked)="onRentCar($event)"
+          ></app-car-card>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        *ngIf="state.items.length === 0 && !(isLoading$ | async)"
+        class="text-center py-5 text-muted"
+      >
+        <i class="bi bi-search fs-1 mb-3 d-block opacity-50"></i>
+        <h4 class="font-bold text-lg">No cars found</h4>
+        <p>Try adjusting your dates or filters to find available cars.</p>
+      </div>
+
+      <!-- Loading / Show More -->
+      <div
+        class="d-flex flex-column align-items-center position-relative mt-2 mb-5"
+      >
+        <div
+          *ngIf="isLoading$ | async"
+          class="spinner-border text-primary mb-3"
+          role="status"
+        ></div>
+
+        <app-button
+          *ngIf="state.items.length > 0 && state.items.length < state.totalCount"
+          label="Show more car"
+          variant="primary"
+          size="medium"
+          [disabled]="(isLoading$ | async) ?? false"
+          (onClick)="onShowMore()"
+        >
+        </app-button>
+
+        <span
+          class="text-muted text-sm position-absolute end-0 bottom-0 mt-2 d-none d-md-inline"
+          *ngIf="state.items.length > 0"
+        >
+          {{ state.items.length }} Car{{ state.items.length !== 1 ? 's' : '' }}
+          of {{ state.totalCount }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
